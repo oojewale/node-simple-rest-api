@@ -30,3 +30,29 @@ exports.patchById = (req, res) => {
       res.status(204).send({});
     });
 };
+
+exports.list = (req, res) => {
+  if (req.query.limit && req.query.limit <= 100) {
+    let limit = +req.query.limit;
+  } else {
+    let limit = 10;
+  }
+
+  let page = 0;
+
+  if (req.query && req.query.page) {
+    req.query.page = +req.query.page;
+    page = Number.isInteger(req.query.page) ? req.query.page : 0;
+  }
+
+  UserModel.list(limit, page).then((result) => {
+    res.status(200).send(result);
+  });
+};
+
+exports.removeById = (req, res) => {
+  UserModel.removeById(req.params.userId)
+    .then((result) => {
+      res.status(204).send({});
+    });
+};

@@ -13,13 +13,13 @@ exports.createUser = (userData) => {
   return user.save();
 }
 
-exports.findBy = (id) => {
+exports.findById = (id) => {
   return User.findById(id).then((result) => {
     result = result.toJSON();
     delete result._id;
     delete result.__v;
     return result;
-  })
+  });
 };
 
 exports.patchUser = (id, userData) => {
@@ -33,6 +33,33 @@ exports.patchUser = (id, userData) => {
         if(err) return reject(err);
         resolve(updatedUser);
       });
+    });
+  });
+};
+
+exports.list = (perPage, page) => {
+  return new Promise((resolve, reject) => {
+    User.find()
+      .limit(perPage)
+      .skip(perPage * page)
+      .exec((err, users) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(users);
+        }
+      });
+  });
+};
+
+exports.removeById = (userId) => {
+  return new Promise((resolve, reject) => {
+    User.remove({_id: userId}, (err) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve();
+      }
     });
   });
 };
