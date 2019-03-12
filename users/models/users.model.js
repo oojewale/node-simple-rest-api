@@ -1,3 +1,7 @@
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/node-simple-rest-api');
+const Schema = mongoose.Schema;
+
 const userSchema = new Schema({
   firstName: String,
   lastName: String,
