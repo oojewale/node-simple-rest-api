@@ -10,7 +10,16 @@ const userSchema = new Schema({
   permissionLevel: Number
 });
 
-const userModel = mongoose.model('Users', userSchema);
+userSchema.virtual('id').get(function() {
+  return this._id.toHexString();
+});
+
+// Serialize virtual fields
+userSchema.set('toJSON', {
+  virtuals: true
+});
+
+const User = mongoose.model('Users', userSchema);
 
 exports.createUser = (userData) => {
   const user = new User(userData);
